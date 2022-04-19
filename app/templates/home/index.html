@@ -1,0 +1,148 @@
+{% extends "home/home.html" %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-4" style="margin-top:100px">
+<h1>Thanks for your time and effort, there will be a short guidance for annotation</h1>
+        <h1>Here is the information of the video you will annotate</h1>
+        <h1>VideoId: 100 VideoLabel: 3 TrueLabel: 3</h1>
+    </div>
+    <div class="col-md-4" style="margin-top:100px">
+<h1>Here shows the original time series data, or saliency map, depends on should know/really know</h1>
+        <video width="320" height="240" controls>
+    <source src="http://127.0.0.1:8887/100_3_IG.mp4" type="video/mp4">
+</video>
+    </div>
+    <div class="col-md-4" style="margin-top:120px">
+		<div id="pingfen">
+			<ul>
+				<li></li> <li></li> <li></li>
+                <li></li> <li></li> <li></li>
+                <li></li> <li></li> <li></li>
+			</ul>
+			<p>一般</p>
+            <button type="button" style="margin-left: 140px; margin-top: 50px" onclick="addList()">Submit </button>
+		</div>
+    </div>
+          </div>
+    </div>
+
+		<style type="text/css">
+			* {
+				margin: 0 auto;
+				padding: 0;
+			}
+			.content{
+				width: 160px;
+				border: 10px solid #e6e6e6;
+			}
+			.pic{
+				width: 160px;
+				margin: 10px auto;
+				border: 0;
+			}
+			.pic img{
+				width: 160px;
+			}
+			#pingfen {
+				width: 100%;
+				margin: 10px auto;
+				height: 100%;
+			}
+
+			#pingfen ul {
+                width: 100%;
+				height: 32px;
+				margin-bottom: 32px;
+			}
+
+			#pingfen li {
+                box-sizing: border-box;
+                float:left;
+				width: 33.3333%;
+				height: 33.3333%;
+				background-color: white;
+                padding-top: 33.3333%;
+				list-style: none;
+                position: relative;
+                border: solid 1px;
+			}
+			#pingfen .active {
+				background-color: red;
+			}
+
+			#pingfen p {
+				width: 160px;
+				height: 32px;
+				background: white;
+				line-height: 32px;
+				text-align: center;
+				font-size: 16px;
+				border: 1px solid #ccc;
+				display: none;
+			}
+            #pingfen submit {
+				width: 160px;
+				height: 32px;
+				background: white;
+				line-height: 32px;
+				text-align: center;
+				font-size: 16px;
+				border: 1px solid #ccc;
+				display: none;
+			}
+		</style>
+		<script type="text/javascript">
+        window.onload = function() {
+			    var list = [];
+				var aData = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+				var button = document.getElementsByTagName('button');
+				var oDiv = document.getElementById('pingfen');
+				var oli = oDiv.getElementsByTagName('li');
+				var oP = oDiv.getElementsByTagName('p')[0];
+				var i = 0;
+				for(i = 0; i < oli.length; i++) {
+				    oli[i].clicked = false;
+					oli[i].index = i;
+					oli[i].onmouseover = function() {
+						oP.style.display = 'block';
+						oP.innerHTML = aData[this.index];
+						oli[this.index].className = 'active';
+					};
+					oli[i].onmouseout = function() {
+					    if(!oli[this.index].clicked){
+					        oP.style.display = 'none';
+                            oli[this.index].className = '';
+                        }
+					};
+					oli[i].onclick = function(){
+					    if(oli[this.index].clicked){
+					        oli[this.index].className = '';
+					        oli[this.index].clicked = false;
+                        }
+					    else {
+                            oli[this.index].className = 'active';
+                            oli[this.index].clicked = true;
+                        }
+					}
+				}
+
+			}
+        function addList() {
+                var list = [];
+                var aData = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+                var oDiv = document.getElementById('pingfen');
+                var oli = oDiv.getElementsByTagName('li');
+				var oP = oDiv.getElementsByTagName('p')[0];
+                for(let ii = 0; ii < oli.length; ii++){
+					        if(oli[ii].className === 'active'){
+					            list.push(aData[ii]);
+                            }
+                        }
+					    alert(list.toString());
+        }
+		</script>
+
+{% endblock %}

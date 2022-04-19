@@ -1,0 +1,246 @@
+{% extends "home/home.html" %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-2" style="margin-top:200px">
+<h1 id="videoId"> videoId : {{ videoId }}</h1>
+<h1 id="videoLabel"> videoLabel : {{ videoLabel }}</h1>
+    </div>
+    <div class="col-md-4" style="margin-top:150px">
+       <h1> time-series data</h1>
+<video width="320" height="240" controls>
+    <source src="{{ videoAddress }}" type="video/mp4">
+</video>
+    </div>
+    <div class="col-md-3" style="margin-top:100px">
+        <h1> what model really knows?</h1>
+        		<div id="pingfen">
+			<ul>
+				<li></li> <li></li> <li></li>
+                <li></li> <li></li> <li></li>
+                <li></li> <li></li> <li></li>
+			</ul>
+			<p>一般</p>
+                    <form method="post" action="/submit" >
+{#                {{ rule.ComplexWord+" "+rule.SimpleWord  }}#}
+{#                         <input type="Submit" name="button" id="S1" value="">#}
+                        <button name = "button" type="Submit" style="margin-left: 245px; margin-top: 50px" onclick="addList()" id="S1" value="">Submit </button>
+{#                        <input type="checkbox" name="hobby" value="running" >{{hh}}<br>#}
+{#                        <button type="submit" style="margin-left: 140px; margin-top: 50px" onclick="addList()">Submit </button>#}
+{#                        <div style="position:relative;left:170px; margin-down:-20px">#}
+{#           <button type="button" style="margin-left: 140px; margin-top: 50px" onclick="addList()">Submit </button>#}
+{##}
+{#         </div>#}
+
+{#            <input type="checkbox" name="hobby" value="running" >{{rule.SimpleWord}}<br>#}
+
+    </form>
+{#            <button type="button" style="margin-left: 140px; margin-top: 50px" onclick="addList()">Submit </button>#}
+		</div>
+    </div>
+          <div class="col-md-3" style="margin-top:100px">
+              <h1> what model should knows?</h1>
+        		<div id="pingfen2">
+			<ul>
+				<li></li> <li></li> <li></li>
+                <li></li> <li></li> <li></li>
+                <li></li> <li></li> <li></li>
+			</ul>
+			<p>一般</p>
+{#            <button type="button" style="margin-left: 140px; margin-top: 50px" onclick="addList()">Submit </button>#}
+		</div>
+    </div>
+  </div>
+</div>
+    <style type="text/css">
+			* {
+				margin: 0 auto;
+				padding: 0;
+			}
+			.content{
+				width: 160px;
+				border: 10px solid #e6e6e6;
+			}
+			.pic{
+				width: 160px;
+				margin: 10px auto;
+				border: 0;
+			}
+			.pic img{
+				width: 160px;
+			}
+			#pingfen {
+				width: 100%;
+				margin: 10px auto;
+				height: 100%;
+			}
+			#pingfen2 {
+				width: 100%;
+				margin: 10px auto;
+				height: 100%;
+			}
+			#pingfen ul {
+                width: 100%;
+				height: 32px;
+				margin-bottom: 32px;
+			}
+			#pingfen2 ul {
+                width: 100%;
+				height: 32px;
+				margin-bottom: 32px;
+			}
+			#pingfen li {
+                box-sizing: border-box;
+                float:left;
+				width: 33.3333%;
+				height: 33.3333%;
+				background-color: white;
+                padding-top: 33.3333%;
+				list-style: none;
+                position: relative;
+                border: solid 1px;
+			}
+            #pingfen2 li {
+                box-sizing: border-box;
+                float:left;
+				width: 33.3333%;
+				height: 33.3333%;
+				background-color: white;
+                padding-top: 33.3333%;
+				list-style: none;
+                position: relative;
+                border: solid 1px;
+			}
+			#pingfen .active {
+				background-color: red;
+			}
+			#pingfen2 .active {
+				background-color: red;
+			}
+			#pingfen p {
+				width: 160px;
+				height: 32px;
+				background: white;
+				line-height: 32px;
+				text-align: center;
+				font-size: 16px;
+				border: 1px solid #ccc;
+				display: none;
+			}
+            #pingfen2 p {
+				width: 160px;
+				height: 32px;
+				background: white;
+				line-height: 32px;
+				text-align: center;
+				font-size: 16px;
+				border: 1px solid #ccc;
+				display: none;
+			}
+            #pingfen submit {
+				width: 160px;
+				height: 32px;
+				background: white;
+				line-height: 32px;
+				text-align: center;
+				font-size: 16px;
+				border: 1px solid #ccc;
+				display: none;
+			}
+		</style>
+    		<script type="text/javascript">
+        window.onload = function() {
+			    var list = [];
+				var aData = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+				var button = document.getElementsByTagName('button');
+				var oDiv = document.getElementById('pingfen');
+				var oli = oDiv.getElementsByTagName('li');
+				var oP = oDiv.getElementsByTagName('p')[0];
+				var i = 0;
+				var aData2 = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+				var oDiv2 = document.getElementById('pingfen2');
+				var oli2 = oDiv2.getElementsByTagName('li');
+				var oP2 = oDiv2.getElementsByTagName('p')[0];
+				var i2 = 0;
+				for(i = 0; i < oli.length; i++) {
+				    oli[i].clicked = false;
+					oli[i].index = i;
+                    oli2[i].clicked = false;
+					oli2[i].index = i;
+					oli[i].onmouseover = function() {
+						oP.style.display = 'block';
+						oP.innerHTML = aData[this.index];
+						oli[this.index].className = 'active';
+					};
+					oli[i].onmouseout = function() {
+					    if(!oli[this.index].clicked){
+					        oP.style.display = 'none';
+                            oli[this.index].className = '';
+                        }
+					};
+					oli[i].onclick = function(){
+					    if(oli[this.index].clicked){
+					        oli[this.index].className = '';
+					        oli[this.index].clicked = false;
+                        }
+					    else {
+                            oli[this.index].className = 'active';
+                            oli[this.index].clicked = true;
+                        }
+					}
+					oli2[i].onmouseover = function() {
+						oP2.style.display = 'block';
+						oP2.innerHTML = aData2[this.index];
+						oli2[this.index].className = 'active';
+					};
+					oli2[i].onmouseout = function() {
+					    if(!oli2[this.index].clicked){
+					        oP2.style.display = 'none';
+                            oli2[this.index].className = '';
+                        }
+					};
+					oli2[i].onclick = function(){
+					    if(oli2[this.index].clicked){
+					        oli2[this.index].className = '';
+					        oli2[this.index].clicked = false;
+                        }
+					    else {
+                            oli2[this.index].className = 'active';
+                            oli2[this.index].clicked = true;
+                        }
+					}
+				}
+
+			}
+        function addList() {
+                var list = [];
+                var aData = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+                var oDiv = document.getElementById('pingfen');
+                var oli = oDiv.getElementsByTagName('li');
+				var oP = oDiv.getElementsByTagName('p')[0];
+                for(let ii = 0; ii < oli.length; ii++){
+					        if(oli[ii].className === 'active'){
+					            list.push(aData[ii]);
+                            }
+                        }
+                var list2 = [];
+                var aData2 = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+                var oDiv2 = document.getElementById('pingfen2');
+                var oli2 = oDiv2.getElementsByTagName('li');
+				var oP2 = oDiv.getElementsByTagName('p')[0];
+                for(let ii = 0; ii < oli2.length; ii++){
+					        if(oli2[ii].className === 'active'){
+					            list2.push(aData2[ii]);
+                            }
+                        }
+                var final_list = ""
+                final_list = final_list + list.toString()
+                final_list = final_list + " "
+                final_list = final_list + list2.toString()
+                document.getElementById('S1').value=final_list;
+        }
+		</script>
+
+{% endblock %}
