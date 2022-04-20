@@ -1,7 +1,7 @@
 from . import home
 from flask import render_template, redirect, url_for, flash, session, request
 from app.home.forms import RegistForm, LoginForm
-from app.models import User, db, UserLog
+from app.models import User, db, UserLog, Pic, ShouldKnow, ReallyKnow
 from datetime import datetime
 from werkzeug.security import generate_password_hash
 from functools import wraps
@@ -68,16 +68,19 @@ def login():
     if form.validate_on_submit():
         data = form.data
         user = User.query.filter_by(name=data["name"]).first()
-        if user.check_pwd(data["pwd"]):
-            userlog = UserLog(
-                user_id=user.id,
-                ip=request.remote_addr
-            )
-            db.session.add(userlog)
-            db.session.commit()
-            session["name"] = user.name
-            videoDict[user.name] = ["100_3_IG.mp4", "200_7_IG.mp4"]
-            return redirect(url_for('home.annotate'))
+        if user:
+            if user.check_pwd(data["pwd"]):
+                userlog = UserLog(
+                    user_id=user.id,
+                    ip=request.remote_addr
+                )
+                db.session.add(userlog)
+                db.session.commit()
+                session["name"] = user.name
+                videoDict[user.name] = ["100_3_IG.mp4", "200_7_IG.mp4"]
+                return redirect(url_for('home.annotate'))
+        else:
+            return redirect(url_for('home.register'))
     return render_template("home/login.html", form=form)
 
 
@@ -114,6 +117,82 @@ def annotate1():
     global videoId
     global videoLabel
     input = request.form.get("button")
-    print(videoId + "_" + videoLabel + "_" + "IG.mp4")
-    print(input)
+    if input:
+        pic = Pic(
+            name=videoId + "_" + videoLabel + "_" + "IG.mp4",
+            index=int(videoId),
+            pred=int(videoLabel),
+            label=int(videoLabel),
+            user_name=session["name"],
+            add_time=datetime.now()
+        )
+        db.session.add(pic)
+        db.session.commit()
+        should_know = ShouldKnow(
+            pic_id=pic.id,
+            one=False,
+            two=False,
+            three=False,
+            four=False,
+            five=False,
+            six=False,
+            seven=False,
+            eight=False,
+            nine=False
+        )
+        really_know = ReallyKnow(
+            pic_id=pic.id,
+            one=False,
+            two=False,
+            three=False,
+            four=False,
+            five=False,
+            six=False,
+            seven=False,
+            eight=False,
+            nine=False
+        )
+        really_know_data = input.split(' ')[0]
+        should_know_data = input.split(' ')[1]
+        for i in really_know_data.split(','):
+            if i == "1":
+                really_know.one = True
+            elif i == "2":
+                really_know.two = True
+            elif i == "3":
+                really_know.three = True
+            elif i == "4":
+                really_know.four = True
+            elif i == "5":
+                really_know.five = True
+            elif i == "6":
+                really_know.six = True
+            elif i == "7":
+                really_know.seven = True
+            elif i == "8":
+                really_know.eight = True
+            elif i == "9":
+                really_know.nine = True
+        for i in should_know_data.split(','):
+            if i == "1":
+                should_know.one = True
+            elif i == "2":
+                should_know.two = True
+            elif i == "3":
+                should_know.three = True
+            elif i == "4":
+                should_know.four = True
+            elif i == "5":
+                should_know.five = True
+            elif i == "6":
+                should_know.six = True
+            elif i == "7":
+                should_know.seven = True
+            elif i == "8":
+                should_know.eight = True
+            elif i == "9":
+                should_know.nine = True
+        db.session.add(should_know)
+        db.session.add(really_know)
+        db.session.commit()
     return redirect(url_for("home.annotate"))

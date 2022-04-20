@@ -33,6 +33,7 @@ class User(db.Model):
     def check_pwd(self, pwd):
         return check_password_hash(self.pwd, pwd)
 
+
 class UserLog(db.Model):
     """
     会员登录日志表
@@ -46,6 +47,48 @@ class UserLog(db.Model):
     def __repr__(self):
         return "<UserLog %r>" % self.id
 
+
+class Pic(db.Model):
+    __tablename__ = "pic"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(100))
+    index = db.Column(db.Integer)
+    pred = db.Column(db.Integer)
+    label = db.Column(db.Integer)
+    user_name = db.Column(db.String(100))
+    add_time = db.Column(db.DateTime, index=True, default=datetime.now)
+    shouldknow = db.relationship("ShouldKnow", backref="pic")
+    reallyknow = db.relationship("ReallyKnow", backref="pic")
+
+
+class ShouldKnow(db.Model):
+    __tablename__ = "shouldknow"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    pic_id = db.Column(db.Integer, db.ForeignKey('pic.id'))
+    one = db.Column(db.Boolean)
+    two = db.Column(db.Boolean)
+    three = db.Column(db.Boolean)
+    four = db.Column(db.Boolean)
+    five = db.Column(db.Boolean)
+    six = db.Column(db.Boolean)
+    seven = db.Column(db.Boolean)
+    eight = db.Column(db.Boolean)
+    nine = db.Column(db.Boolean)
+
+
+class ReallyKnow(db.Model):
+    __tablename__ = "reallyknow"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    pic_id = db.Column(db.Integer, db.ForeignKey('pic.id'))
+    one = db.Column(db.Boolean)
+    two = db.Column(db.Boolean)
+    three = db.Column(db.Boolean)
+    four = db.Column(db.Boolean)
+    five = db.Column(db.Boolean)
+    six = db.Column(db.Boolean)
+    seven = db.Column(db.Boolean)
+    eight = db.Column(db.Boolean)
+    nine = db.Column(db.Boolean)
 
 
 if __name__ == '__main__':
