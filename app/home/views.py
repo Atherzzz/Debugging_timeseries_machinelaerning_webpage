@@ -123,7 +123,7 @@ def annotate1():
             index=int(videoId),
             pred=int(videoLabel),
             label=int(videoLabel),
-            user_name=session["nameg"],
+            user_name=session["name"],
             add_time=datetime.now()
         )
         db.session.add(pic)
