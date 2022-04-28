@@ -6,43 +6,43 @@ from app.models import User
 
 class RegistForm(FlaskForm):
     name = StringField(
-        label="昵称",
+        label="username",
         validators=[
-            DataRequired("请输入昵称！")
+            DataRequired("please input your username！")
         ],
-        description="昵称",
+        description="username",
         render_kw={
             "class": "form-control input-lg",
-            "placeholder": "在这里填写昵称！"
+            "placeholder": "pls input your username here！"
         }
     )
 
     pwd = PasswordField(
-        label="密码",
+        label="password",
         validators=[
-            DataRequired("请输入密码！")
+            DataRequired("please input your password！")
         ],
-        description="密码",
+        description="password",
         render_kw={
             "class": "form-control input-lg",
-            "placeholder": "在这里填写密码！"
+            "placeholder": "pls input your password！"
         }
     )
     repwd = PasswordField(
-        label="确认密码",
+        label="confirm password",
         validators=[
-            DataRequired("请输入密码！"),
-            EqualTo('pwd', message="两次输入密码不一致！")
+            DataRequired("pls input your password！"),
+            EqualTo('pwd', message="password are different！")
         ],
-        description="确认密码",
+        description="pls confirm your password",
         render_kw={
             "class": "form-control input-lg",
-            "placeholder": "再次输入密码！"
+            "placeholder": "pls input your password again！"
         }
     )
 
     submit = SubmitField(
-        label="提交注册",
+        label="submit register",
         render_kw={
             "class": "btn btn-lg btn-success btn-block"
         }
@@ -52,37 +52,37 @@ class RegistForm(FlaskForm):
         name = field.data
         user = User.query.filter_by(name=name).count()
         if user == 1:
-            raise ValidationError("昵称已经存在！")
+            raise ValidationError("username is already exist！")
 
 
 class LoginForm(FlaskForm):
     name = StringField(
-        label="账户",
+        label="username",
         validators=[
-            DataRequired("请输入账户！")
+            DataRequired("pls input your username！")
         ],
-        description="账户",
+        description="username",
         render_kw={
 
             "class": "form-control input-lg",
-            "placeholder": "在这里填写账户！"
+            "placeholder": "pls input your username at here！"
         }
     )
 
     pwd = PasswordField(
-        label="密码",
+        label="password",
         validators=[
-            DataRequired("请输入密码！")
+            DataRequired("pls input your password！")
         ],
-        description="密码",
+        description="password",
         render_kw={
             "class": "form-control input-lg",
-            "placeholder": "在这里填写密码！"
+            "placeholder": "pls input your password here！"
         }
     )
 
     submit = SubmitField(
-        label="登录",
+        label="login",
         render_kw={
             "class": "btn btn-lg btn-success btn-block"
         }

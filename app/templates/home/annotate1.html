@@ -16,7 +16,7 @@
 </video>
     </div>
     <div class="col-md-4" style="margin-top:100px">
-        <h2> what model should knows?</h2>
+        <h2> what model really knows?</h2>
         		<div id="pingfen">
 			<ul>
 				<li></li> <li></li> <li></li>
@@ -48,14 +48,14 @@
 				margin: 0 auto;
 				padding: 0;
 			}
-            .svg{
-                 border: 1px solid grey;
-            }
-            .line{
-                stroke: steelblue;
-                stroke-width: 2px;
-                stroke-linecap: round;
-            }
+                .svg {
+    border: 1px solid grey;
+}
+            .line {
+    stroke: steelblue;
+    stroke-width: 2px;
+    stroke-linecap: round;
+}
 			.content{
 				width: 160px;
 				border: 10px solid #e6e6e6;
@@ -113,60 +113,58 @@
 				display: none;
 			}
 		</style>
-    		<script type="text/javascript">
+    		<script type="text/javascript" src="https://d3js.org/d3.v7.min.js">
         window.onload = function() {
+			    var list = [];
 				var aData = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 				var button = document.getElementsByTagName('button');
 				var oDiv = document.getElementById('pingfen');
 				var oli = oDiv.getElementsByTagName('li');
 				var oP = oDiv.getElementsByTagName('p')[0];
-				var templine;
-				var temp;
 				var i = 0;
+				var line;
 				var counter=0;
+				var vis = d3.select("body").append("svg")
+    .attr("width", 600)
+    .attr("height", 400)
+    .on("click", onclick)
 				for(i = 0; i < oli.length; i++) {
 					oli[i].index = i;
-					if(i<3) oli[i].level = 1;
-					else if(i<6) oli[i].level = 2;
-					else oli[i].level = 3;
 					oli[i].onmouseover = function() {
 						oP.style.display = 'block';
 						oP.innerHTML = aData[this.index];
 						oli[this.index].className = 'active';
-						if(counter!==0){
-						    if((this.level === temp.level && Math.abs(this.index - temp.index)===1) || (Math.abs(this.level - temp.level)===1 && Math.abs(this.index - temp.index)<=4)){
-						        templine = new LeaderLine(LeaderLine.pointAnchor(temp), LeaderLine.pointAnchor(oli[this.index]), {dash: {animation: true}});
-						        templine.setOptions({path:'straight'});
-                            }
-                        }
 					};
 					oli[i].onmouseout = function() {
 					        oP.style.display = 'none';
                             oli[this.index].className = '';
-                            if(templine!==null){
-                                templine.hide();
-                            }
-
 					};
 					oli[i].onclick = function(){
 					    if(counter === 0){
-					        counter = 1;
 					        oli[this.index].className = 'active';
-					        temp = oli[this.index];
+					        var m = d3.mouse(this);
+					        counter = 1;
+					        line = vis.append("line")
+                            .attr("x1", m[0])
+                            .attr("y1", m[1])
+                            .attr("x2", m[0])
+                            .attr("y2", m[1]);
+					        vis.on("mousemove", onmousemove);
 					    }
 					    else{
-					        if((this.level === temp.level && Math.abs(this.index - temp.index)===1) || (Math.abs(this.level - temp.level)===1 && Math.abs(this.index - temp.index)<=4)){
-					            counter =0;
-					            oli[this.index].className = 'active';
-					            var line = new LeaderLine(
-					                LeaderLine.pointAnchor(temp),
-                                    LeaderLine.pointAnchor(oli[this.index])
-                                );
-					            line.setOptions({path:'straight'});
-                            }
+					        counter =0;
+                            oli[this.index].className = 'active';
+                            vis.on("mousemove", null);
                         }
+                        }
+					oli[i].onmousemove = function (){
+					    if(counter === 1){
+					            var m = d3.mouse(this);
+					            line.attr("x2", m[0])
+                                    .attr("y2", m[1]);
                         }
                     }
+				}
 
 			}
         function addList() {

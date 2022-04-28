@@ -58,7 +58,6 @@ class Pic(db.Model):
     user_name = db.Column(db.String(100))
     add_time = db.Column(db.DateTime, index=True, default=datetime.now)
     shouldknow = db.relationship("ShouldKnow", backref="pic")
-    reallyknow = db.relationship("ReallyKnow", backref="pic")
 
 
 class ShouldKnow(db.Model):
@@ -74,22 +73,6 @@ class ShouldKnow(db.Model):
     seven = db.Column(db.Boolean)
     eight = db.Column(db.Boolean)
     nine = db.Column(db.Boolean)
-
-
-class ReallyKnow(db.Model):
-    __tablename__ = "reallyknow"
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    pic_id = db.Column(db.Integer, db.ForeignKey('pic.id'))
-    one = db.Column(db.Boolean)
-    two = db.Column(db.Boolean)
-    three = db.Column(db.Boolean)
-    four = db.Column(db.Boolean)
-    five = db.Column(db.Boolean)
-    six = db.Column(db.Boolean)
-    seven = db.Column(db.Boolean)
-    eight = db.Column(db.Boolean)
-    nine = db.Column(db.Boolean)
-
 
 if __name__ == '__main__':
     db.drop_all()

@@ -1,7 +1,7 @@
 from . import home
 from flask import render_template, redirect, url_for, flash, session, request
 from app.home.forms import RegistForm, LoginForm
-from app.models import User, db, UserLog, Pic, ShouldKnow, ReallyKnow
+from app.models import User, db, UserLog, Pic, ShouldKnow
 from datetime import datetime
 from werkzeug.security import generate_password_hash
 from functools import wraps
@@ -47,8 +47,9 @@ def annotate():
         videoDict[userName] = videos
         videoId = video.split('_')[0]
         videoLabel = video.split('_')[1]
-        videoAddress = "http://127.0.0.1:8887/" + videoId + "_" + videoLabel + "_" + "IG.mp4"
-        return render_template("home/annotate.html", videoId=videoId, videoLabel=videoLabel, videoAddress=videoAddress)
+        videoAddress = "http://127.0.0.1:8887/" + videoId + "_" + videoLabel + "_" + "OS.mp4"
+        originalVideoAddress = "http://127.0.0.1:8887/" + videoId + "_" + videoLabel + ".mp4"
+        return render_template("home/annotate.html", videoId=videoId, videoLabel=videoLabel, videoAddress=videoAddress, originalVideoAddress=originalVideoAddress)
     else:
         return render_template("home/complete.html")
 
@@ -77,7 +78,7 @@ def login():
                 db.session.add(userlog)
                 db.session.commit()
                 session["name"] = user.name
-                videoDict[user.name] = ["100_3_IG.mp4", "200_7_IG.mp4"]
+                videoDict[user.name] = ["100_3_OS.mp4", "200_7_OS.mp4"]
                 return redirect(url_for('home.annotate'))
         else:
             return redirect(url_for('home.register'))
@@ -140,39 +141,7 @@ def annotate1():
             eight=False,
             nine=False
         )
-        really_know = ReallyKnow(
-            pic_id=pic.id,
-            one=False,
-            two=False,
-            three=False,
-            four=False,
-            five=False,
-            six=False,
-            seven=False,
-            eight=False,
-            nine=False
-        )
-        really_know_data = input.split(' ')[0]
         should_know_data = input.split(' ')[1]
-        for i in really_know_data.split(','):
-            if i == "1":
-                really_know.one = True
-            elif i == "2":
-                really_know.two = True
-            elif i == "3":
-                really_know.three = True
-            elif i == "4":
-                really_know.four = True
-            elif i == "5":
-                really_know.five = True
-            elif i == "6":
-                really_know.six = True
-            elif i == "7":
-                really_know.seven = True
-            elif i == "8":
-                really_know.eight = True
-            elif i == "9":
-                really_know.nine = True
         for i in should_know_data.split(','):
             if i == "1":
                 should_know.one = True
@@ -193,6 +162,5 @@ def annotate1():
             elif i == "9":
                 should_know.nine = True
         db.session.add(should_know)
-        db.session.add(really_know)
         db.session.commit()
     return redirect(url_for("home.annotate"))
