@@ -2,9 +2,297 @@
 
 {% block content %}
 
-<h1>{{ session["name"] }}您好</h1>
-<h1>{{ session["name"] }}您好</h1>
-    <h1>{{ session["name"] }}您好</h1>
-    <h1>{{ session["name"] }}您好</h1>
-    <h1>{{ session["name"] }}您好</h1>
+<div class="container">
+  <div class="row">
+    <div class="col-md-2" style="margin-top:200px">
+<h4 id="videoId"> Video Id : {{ videoId }}</h4>
+<h4 id="videoLabel"> Predicted Label : {{ videoLabel }}</h4>
+        <h4 id="trueLabel"> True Label : {{ trueLabel }}</h4>
+    </div>
+      <div class="col-md-2" style="margin-top:150px">
+       <h1> Original data</h1>
+<video width="320" height="240" controls>
+    <source src="{{ originalVideoAddress }}" type="video/mp4">
+</video>
+    </div>
+    <div class="col-md-4" style="margin-top:100px">
+        <h2> what model should knows?</h2>
+        		<div id="pingfen">
+			<ul>
+				<li></li> <li></li> <li></li>
+                <li></li> <li></li> <li></li>
+                <li></li> <li></li> <li></li>
+			</ul>
+			<p>一般</p>
+                    <form method="post" action="/train" >
+{#                {{ rule.ComplexWord+" "+rule.SimpleWord  }}#}
+{#                         <input type="Submit" name="button" id="S1" value="">#}
+                        <button name = "button" type="Submit" style="margin-left: 135px; margin-top: 50px" onclick="addList()" id="S1" value="">Submit </button>
+{#                        <input type="checkbox" name="hobby" value="running" >{{hh}}<br>#}
+{#                        <button type="submit" style="margin-left: 140px; margin-top: 50px" onclick="addList()">Submit </button>#}
+{#                        <div style="position:relative;left:170px; margin-down:-20px">#}
+{#           <button type="button" style="margin-left: 140px; margin-top: 50px" onclick="addList()">Submit </button>#}
+{##}
+{#         </div>#}
+
+{#            <input type="checkbox" name="hobby" value="running" >{{rule.SimpleWord}}<br>#}
+
+    </form>
+{#            <button type="button" style="margin-left: 140px; margin-top: 50px" onclick="addList()">Submit </button>#}
+		</div>
+    </div>
+      <div class="col-md-4" style="margin-top:122px">
+          <h2> Result</h2>
+           <h2>    </h2>
+          <h2 id="answer" style="display: none">{{ answer }} </h2>
+        		<div id="pingfen2">
+			<ul>
+				<li></li> <li></li> <li></li>
+                <li></li> <li></li> <li></li>
+                <li></li> <li></li> <li></li>
+			</ul>
+			<p>一般</p>
+             <button name = "button1" type="Submit" style="margin-left: 135px; margin-top: 50px" onclick="showAnswer()" id="S2" value="">Show answer </button>
+		</div>
+    </div>
+  </div>
+</div>
+    <style type="text/css">
+			* {
+				margin: 0 auto;
+				padding: 0;
+			}
+            .svg{
+                 border: 1px solid grey;
+            }
+            .line{
+                stroke: steelblue;
+                stroke-width: 2px;
+                stroke-linecap: round;
+            }
+			.content{
+				width: 160px;
+				border: 10px solid #e6e6e6;
+			}
+			.pic{
+				width: 160px;
+				margin: 10px auto;
+				border: 0;
+			}
+			.pic img{
+				width: 160px;
+			}
+			#pingfen {
+				width: 100%;
+				margin: 10px auto;
+				height: 100%;
+			}
+            #pingfen2 {
+				width: 100%;
+				margin: 10px auto;
+				height: 100%;
+			}
+			#pingfen ul {
+                width: 100%;
+				height: 32px;
+				margin-bottom: 32px;
+			}
+            #pingfen2 ul {
+                width: 100%;
+				height: 32px;
+				margin-bottom: 32px;
+			}
+			#pingfen li {
+                box-sizing: border-box;
+                float:left;
+				width: 33.3333%;
+				height: 33.3333%;
+				background-color: white;
+                padding-top: 33.3333%;
+				list-style: none;
+                position: relative;
+                border: solid 1px;
+			}
+            #pingfen2 li {
+                box-sizing: border-box;
+                float:left;
+				width: 33.3333%;
+				height: 33.3333%;
+				background-color: white;
+                padding-top: 33.3333%;
+				list-style: none;
+                position: relative;
+                border: solid 1px;
+			}
+			#pingfen .active {
+				background-color: red;
+			}
+			#pingfen p {
+				width: 160px;
+				height: 32px;
+				background: white;
+				line-height: 32px;
+				text-align: center;
+				font-size: 16px;
+				border: 1px solid #ccc;
+				display: none;
+			}
+            #pingfen2 p {
+				width: 160px;
+				height: 32px;
+				background: white;
+				line-height: 32px;
+				text-align: center;
+				font-size: 16px;
+				border: 1px solid #ccc;
+				display: none;
+			}
+            #pingfen submit {
+				width: 160px;
+				height: 32px;
+				background: white;
+				line-height: 32px;
+				text-align: center;
+				font-size: 16px;
+				border: 1px solid #ccc;
+				display: none;
+			}
+            #pingfen2 submit {
+				width: 160px;
+				height: 32px;
+				background: white;
+				line-height: 32px;
+				text-align: center;
+				font-size: 16px;
+				border: 1px solid #ccc;
+				display: none;
+			}
+		</style>
+    		<script type="text/javascript">
+                var tempList = [];
+        window.onload = function() {
+                const a = new Map()
+                const b = new Map()
+				var aData = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+				var button = document.getElementsByTagName('button');
+				var oDiv = document.getElementById('pingfen');
+				var oli = oDiv.getElementsByTagName('li');
+				var oP = oDiv.getElementsByTagName('p')[0];
+				var templine;
+				var temp;
+				var i = 0;
+				var counter=0;
+				for(i = 0; i < oli.length; i++) {
+					oli[i].index = i;
+					if(i<3) oli[i].level = 1;
+					else if(i<6) oli[i].level = 2;
+					else oli[i].level = 3;
+					oli[i].onmouseover = function() {
+						oP.style.display = 'block';
+						oP.innerHTML = aData[this.index];
+						oli[this.index].className = 'active';
+						if(counter!==0){
+						    if((this.level === temp.level && Math.abs(this.index - temp.index)===1) || (Math.abs(this.level - temp.level)===1 && Math.abs(this.index - temp.index)<=4 && Math.abs(this.index - temp.index)>=2)){
+						        templine = new LeaderLine(LeaderLine.pointAnchor(temp), LeaderLine.pointAnchor(oli[this.index]), {dash: {animation: true}});
+						        templine.setOptions({path:'arc'});
+                            }
+                        }
+					};
+					oli[i].onmouseout = function() {
+					        oP.style.display = 'none';
+                            oli[this.index].className = '';
+                            if(templine!==null){
+                                templine.hide();
+                            }
+
+					};
+					oli[i].onclick = function(){
+					    if(counter === 0){
+					        counter = 1;
+					        oli[this.index].className = 'active';
+					        temp = oli[this.index];
+					    }
+					    else{
+					        if((this.level === temp.level && Math.abs(this.index - temp.index)===1) || (Math.abs(this.level - temp.level)===1 && Math.abs(this.index - temp.index)<=4) && Math.abs(this.index - temp.index)>=2){
+					            counter =0;
+					            oli[this.index].className = 'active';
+					            var key = temp.index + "_" + this.index;
+					            if(!a.has(key)){
+					                var line = new LeaderLine(
+					                LeaderLine.pointAnchor(temp),
+                                    LeaderLine.pointAnchor(oli[this.index])
+                                );
+					            line.setOptions({path:'arc'});
+					            tempList.push([temp.index+1, this.index+1]);
+					            a.set(key, line);
+					            b.set(key, 1);
+                                }
+					            else {
+					                var line = a.get(key);
+                    line.setOptions({
+                        middleLabel: (b.get(key) + 1).toString()
+                    });
+                    b.set(key, b.get(key) + 1);
+                    a.set(key, line);
+                                }
+                            }
+                        }
+                        }
+                    }
+
+			}
+        function addList() {
+                var final_list = "";
+                for(var i in tempList){
+                    final_list = final_list + tempList[i].toString() + " ";
+                }
+                document.getElementById('S1').value=final_list;
+
+                {#var list = [];#}
+                {#var aData = [1, 2, 3, 4, 5, 6, 7, 8, 9];#}
+                {#var oDiv = document.getElementById('pingfen');#}
+                {#var oli = oDiv.getElementsByTagName('li');#}
+				{#var oP = oDiv.getElementsByTagName('p')[0];#}
+                {#for(let ii = 0; ii < oli.length; ii++){#}
+				{#	        if(oli[ii].className === 'active'){#}
+				{#	            list.push(aData[ii]);#}
+                {#            }#}
+                {#        }#}
+                {#var final_list = ""#}
+                {#final_list = final_list + list.toString()#}
+                {#final_list = final_list + " "#}
+                {#document.getElementById('S1').value=final_list;#}
+        }
+        function showAnswer(){
+            const a = new Map()
+            const b = new Map()
+            var oDiv2 = document.getElementById('pingfen2');
+            var oli2 = oDiv2.getElementsByTagName('li');
+            var obj = document.getElementById('answer');
+            var data = obj.innerText;
+            var strList = data.split(" ");
+            for(var i=0;i<strList.length-1; i++){
+                var temp = strList[i].split(",");
+                var num1 = Number(temp[0]);
+                var num2 = Number(temp[1]);
+                if(!a.has(strList[i])){
+                    var line = new LeaderLine(
+                    LeaderLine.pointAnchor(oli2[num1-1]),
+                    LeaderLine.pointAnchor(oli2[num2-1])
+                );
+                    line.setOptions({path:'arc'});
+                    a.set(strList[i], line);
+                    b.set(strList[i], 1);
+                }
+                else{
+                    var line = a.get(strList[i]);
+                    line.setOptions({
+                        middleLabel: (b.get(strList[i]) + 1).toString()
+                    });
+                    b.set(strList[i], b.get(strList[i]) + 1);
+                    a.set(strList[i], line);
+                }
+            }
+        }
+		</script>
 {% endblock %}

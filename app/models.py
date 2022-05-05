@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-from werkzeug.security import  check_password_hash
+from werkzeug.security import check_password_hash
 import pymysql, os
 
 app = Flask(__name__)
@@ -12,10 +12,11 @@ PORT = '3306'
 DATABASE = 'movic'
 USERNAME = 'root'
 PASSWORD = 'zm980131'
-
-app.config["SQLALCHEMY_DATABASE_URI"] = 'mysql+pymysql://{}:{}@{}:{}/{}?charset=utf8'.format(USERNAME, PASSWORD, HOSTNAME, PORT, DATABASE)
+app.config["SQLALCHEMY_DATABASE_URI"] = 'mysql+pymysql://{}:{}@{}:{}/{}?charset=utf8'.format(USERNAME, PASSWORD,
+                                                                                             HOSTNAME, PORT, DATABASE)
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 app.config["SECRET_KEY"] = os.urandom(24)
+app.config["FOREIGN_KEY_CHECKS"] = 1
 db = SQLAlchemy(app)
 
 
@@ -27,6 +28,7 @@ class User(db.Model):
     pwd = db.Column(db.String(100))
     addtime = db.Column(db.DateTime, index=True, default=datetime.now)
     userlogs = db.relationship("UserLog", backref="user")  # 会员日志外键关联
+
     def __repr__(self):
         return "<User %r>" % self.name
 
@@ -64,15 +66,9 @@ class ShouldKnow(db.Model):
     __tablename__ = "shouldknow"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     pic_id = db.Column(db.Integer, db.ForeignKey('pic.id'))
-    one = db.Column(db.Boolean)
-    two = db.Column(db.Boolean)
-    three = db.Column(db.Boolean)
-    four = db.Column(db.Boolean)
-    five = db.Column(db.Boolean)
-    six = db.Column(db.Boolean)
-    seven = db.Column(db.Boolean)
-    eight = db.Column(db.Boolean)
-    nine = db.Column(db.Boolean)
+    pic_annotation = db.Column(db.String(100))
+
+
 
 if __name__ == '__main__':
     db.drop_all()

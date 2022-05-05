@@ -6,10 +6,26 @@ from datetime import datetime
 from werkzeug.security import generate_password_hash
 from functools import wraps
 from random import choice
+import heapq
 
-videoDict = {}
+videoDict = [(0, "0_8_0_OS.mp4"), (0, "1_0_0_OS.mp4"), (0, "2_4_0_OS.mp4"), (0, "3_4_0_OS.mp4"), (0, "4_8_0_OS.mp4"),
+             (0, "5_0_0_OS.mp4"), (0, "6_0_0_OS.mp4"), (0, "7_0_0_OS.mp4"), (0, "8_0_0_OS.mp4"), (0, "9_0_0_OS.mp4")]
+trainDict = {}
+trained = {}
 videoId = ""
 videoLabel = ""
+trueLabel = ""
+visited = {}
+heapq.heapify(videoDict)
+trainAns = {"25_8_0_OS.mp4": "9,6 6,3 3,2 2,1 1,4 4,7 7,8 8,9",
+            "50_1_1_OS.mp4": "2,5 5,8",
+            "75_8_2_OS.mp4": "2,3 3,6 6,8 8,9 7,8 8,7",
+            "100_3_3_OS.mp4": "3,6 6,8 8,7 7,8 8,9",
+            "125_4_4_OS.mp4": "2,4 4,5 5,6 6,5 5,2 2,5 5,8",
+            "150_5_5_OS.mp4": "2,5 5,4 4,5 5,6 6,9 9,8 8,7 7,8 8,5 5,2 2,3",
+            "175_6_6_OS.mp4": "3,5 5,4 4,7 7,8 8,9 9,5 5,8",
+            "200_7_7_OS.mp4": "1,2 2,3 3,6 6,9",
+            }
 
 
 def user_login_req(func):
@@ -39,32 +55,73 @@ def annotate():
     global videoDict
     global videoId
     global videoLabel
+    global trueLabel
+    global visited
     userName = session.get("name")
-    videos = videoDict.get(userName)
-    if videos:
-        video = choice(videos)
-        videos.remove(video)
-        videoDict[userName] = videos
-        videoId = video.split('_')[0]
-        videoLabel = video.split('_')[1]
-        videoAddress = "http://127.0.0.1:8887/" + videoId + "_" + videoLabel + "_" + "OS.mp4"
-        originalVideoAddress = "http://127.0.0.1:8887/" + videoId + "_" + videoLabel + ".mp4"
-        return render_template("home/annotate.html", videoId=videoId, videoLabel=videoLabel, videoAddress=videoAddress, originalVideoAddress=originalVideoAddress)
+    if trained.get(userName):
+        if len(visited.get(userName)) == len(videoDict):
+            return render_template("home/complete.html")
+        else:
+            video = heapq.heappop(videoDict)
+            while video[1] in visited.get(userName):
+                temp = videoDict.pop()
+                videoDict.append(video)
+                video = temp
+            heapq.heapify(videoDict)
+            videoId = video[1].split('_')[0]
+            videoLabel = video[1].split('_')[1]
+            trueLabel = video[1].split('_')[2]
+            videoAddress = "../../static/video/" + videoId + "_" + videoLabel + "_" + trueLabel + "_OS.mp4"
+            originalVideoAddress = "../../static/video/" + videoId + "_" + videoLabel + "_" + trueLabel + ".mp4"
+            heapq.heappush(videoDict, (video[0] + 1, video[1]))
+            tempSet = visited.get(userName)
+            tempSet.add(video[1])
+            visited[userName] = tempSet
+            return render_template("home/annotate.html", videoId=videoId, videoLabel=videoLabel,
+                                   videoAddress=videoAddress, originalVideoAddress=originalVideoAddress,
+                                   trueLabel=trueLabel)
     else:
-        return render_template("home/complete.html")
+        return redirect(url_for('home.user'))
 
 
 # 用户中心
 @home.route("/user")
 @user_login_req
 def user():
-    return render_template("home/user.html")
+    userName = session.get("name")
+    global trainDict
+    global trained
+    if trainDict[userName]:
+        videoName = trainDict[userName].pop()
+        trainId = videoName.split('_')[0]
+        trainLabel = videoName.split('_')[1]
+        tranTrueLabel = videoName.split('_')[2]
+        videoAddress = "../../static/video/" + trainId + "_" + trainLabel + "_" + tranTrueLabel + "_OS.mp4"
+        originalVideoAddress = "../../static/video/" + trainId + "_" + trainLabel + "_" + tranTrueLabel + ".mp4"
+        return render_template("home/user.html", videoId=trainId, videoLabel=trainLabel,
+                               videoAddress=videoAddress, originalVideoAddress=originalVideoAddress,
+                               answer=trainAns[videoName], trueLabel=tranTrueLabel)
+    else:
+        trained[userName] = True
+        trainDict[userName] = ["25_8_0_OS.mp4", "50_1_1_OS.mp4", "75_8_2_OS.mp4", "100_3_3_OS.mp4",
+                               "125_4_4_OS.mp4", "150_5_5_OS.mp4", "175_6_6_OS.mp4", "200_7_7_OS.mp4"
+                               ]
+        return redirect(url_for('home.annotate'))
+
+
+@home.route("/train", methods=["GET", "POST"])
+@user_login_req
+def annotate2():
+    return redirect(url_for("home.user"))
 
 
 # 用户登录
 @home.route("/login", methods=["GET", "POST"])
 def login():
     global videoDict
+    global visited
+    global trained
+    global trainDict
     form = LoginForm()
     if form.validate_on_submit():
         data = form.data
@@ -78,7 +135,12 @@ def login():
                 db.session.add(userlog)
                 db.session.commit()
                 session["name"] = user.name
-                videoDict[user.name] = ["100_3_OS.mp4", "200_7_OS.mp4"]
+                if user.name not in visited.keys():
+                    trained[user.name] = False
+                    visited[user.name] = set()
+                    trainDict[user.name] = ["25_8_0_OS.mp4", "50_1_1_OS.mp4", "75_8_2_OS.mp4", "100_3_3_OS.mp4",
+                                            "125_4_4_OS.mp4", "150_5_5_OS.mp4", "175_6_6_OS.mp4", "200_7_7_OS.mp4"
+                                            ]
                 return redirect(url_for('home.annotate'))
         else:
             return redirect(url_for('home.register'))
@@ -120,7 +182,7 @@ def annotate1():
     input = request.form.get("button")
     if input:
         pic = Pic(
-            name=videoId + "_" + videoLabel + "_" + "IG.mp4",
+            name=videoId + "_" + videoLabel + "_" + trueLabel + "_" + "IG.mp4",
             index=int(videoId),
             pred=int(videoLabel),
             label=int(videoLabel),
@@ -131,36 +193,8 @@ def annotate1():
         db.session.commit()
         should_know = ShouldKnow(
             pic_id=pic.id,
-            one=False,
-            two=False,
-            three=False,
-            four=False,
-            five=False,
-            six=False,
-            seven=False,
-            eight=False,
-            nine=False
         )
-        should_know_data = input.split(' ')[1]
-        for i in should_know_data.split(','):
-            if i == "1":
-                should_know.one = True
-            elif i == "2":
-                should_know.two = True
-            elif i == "3":
-                should_know.three = True
-            elif i == "4":
-                should_know.four = True
-            elif i == "5":
-                should_know.five = True
-            elif i == "6":
-                should_know.six = True
-            elif i == "7":
-                should_know.seven = True
-            elif i == "8":
-                should_know.eight = True
-            elif i == "9":
-                should_know.nine = True
+        should_know.pic_annotation = input
         db.session.add(should_know)
         db.session.commit()
     return redirect(url_for("home.annotate"))
