@@ -9,13 +9,13 @@
 <h4 id="videoLabel"> Predicted Label : {{ videoLabel }}</h4>
         <h4 id="trueLabel"> True Label : {{ trueLabel }}</h4>
     </div>
-      <div class="col-md-2" style="margin-top:150px">
+      <div class="col-md-3" style="margin-top:150px">
        <h1> Original data</h1>
 <video width="320" height="240" controls>
     <source src="{{ originalVideoAddress }}" type="video/mp4">
 </video>
     </div>
-    <div class="col-md-4" style="margin-top:100px">
+    <div class="col-md-3" style="margin-top:100px">
         <h2> what model should knows?</h2>
         		<div id="pingfen">
 			<ul>
@@ -27,7 +27,7 @@
                     <form method="post" action="/train" >
 {#                {{ rule.ComplexWord+" "+rule.SimpleWord  }}#}
 {#                         <input type="Submit" name="button" id="S1" value="">#}
-                        <button name = "button" type="Submit" style="margin-left: 135px; margin-top: 50px" onclick="addList()" id="S1" value="">Submit </button>
+                        <button name = "button" type="Submit" style="margin-left: 115px; margin-top: 50px" onclick="addList()" id="S1" value="">Submit </button>
 {#                        <input type="checkbox" name="hobby" value="running" >{{hh}}<br>#}
 {#                        <button type="submit" style="margin-left: 140px; margin-top: 50px" onclick="addList()">Submit </button>#}
 {#                        <div style="position:relative;left:170px; margin-down:-20px">#}
@@ -41,7 +41,7 @@
 {#            <button type="button" style="margin-left: 140px; margin-top: 50px" onclick="addList()">Submit </button>#}
 		</div>
     </div>
-      <div class="col-md-4" style="margin-top:122px">
+      <div class="col-md-3" style="margin-top:122px">
           <h2> Result</h2>
            <h2>    </h2>
           <h2 id="answer" style="display: none">{{ answer }} </h2>
@@ -52,7 +52,7 @@
                 <li></li> <li></li> <li></li>
 			</ul>
 			<p>一般</p>
-             <button name = "button1" type="Submit" style="margin-left: 135px; margin-top: 50px" onclick="showAnswer()" id="S2" value="">Show answer </button>
+             <button name = "button1" type="Submit" style="margin-left: 100px; margin-top: 50px" onclick="showAnswer()" id="S2" value="">Show answer </button>
 		</div>
     </div>
   </div>

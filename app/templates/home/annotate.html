@@ -27,7 +27,12 @@
                     <form method="post" action="/submit" >
 {#                {{ rule.ComplexWord+" "+rule.SimpleWord  }}#}
 {#                         <input type="Submit" name="button" id="S1" value="">#}
-                        <button name = "button" type="Submit" style="margin-left: 535px; margin-top: 50px" onclick="addList()" id="S1" value="">Submit </button>
+                        <div  align="left" style="float: left">
+                            <button name = "button1" class="button" type="button" onclick="clearAll()" id="S2" value="">Clear all </button>
+                        </div>
+                        <div align="right">
+                            <button name = "button" class="button" type="Submit"  onclick="addList()" id="S1" value="">Submit </button>
+                        </div>
 {#                        <input type="checkbox" name="hobby" value="running" >{{hh}}<br>#}
 {#                        <button type="submit" style="margin-left: 140px; margin-top: 50px" onclick="addList()">Submit </button>#}
 {#                        <div style="position:relative;left:170px; margin-down:-20px">#}
@@ -78,6 +83,20 @@
 				height: 32px;
 				margin-bottom: 32px;
 			}
+            .button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+            .button:hover {
+    background-color: #4CAF50; /* Green */
+    color: white;
+}
 			#pingfen li {
                 box-sizing: border-box;
                 float:left;
@@ -115,11 +134,11 @@
 		</style>
     		<script type="text/javascript">
                 var tempList = [];
-        window.onload = function() {
                 const a = new Map()
                 const b = new Map()
+        window.onload = function() {
 				var aData = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-				var button = document.getElementsByTagName('button');
+				{#var button = document.getElementsByTagName('button1');#}
 				var oDiv = document.getElementById('pingfen');
 				var oli = oDiv.getElementsByTagName('li');
 				var oP = oDiv.getElementsByTagName('p')[0];
@@ -133,7 +152,7 @@
 					else if(i<6) oli[i].level = 2;
 					else oli[i].level = 3;
 					oli[i].onmouseover = function() {
-						oP.style.display = 'block';
+						{#oP.style.display = 'block';#}
 						oP.innerHTML = aData[this.index];
 						oli[this.index].className = 'active';
 						if(counter!==0){
@@ -177,6 +196,7 @@
                     line.setOptions({
                         middleLabel: (b.get(key) + 1).toString()
                     });
+                    tempList.push([temp.index+1, this.index+1]);
                     b.set(key, b.get(key) + 1);
                     a.set(key, line);
                                 }
@@ -186,6 +206,14 @@
                     }
 
 			}
+			function clearAll(){
+                for(line of a.values()){
+                    line.hide();
+                }
+                a.clear();
+                b.clear();
+                tempList = [];
+            }
         function addList() {
                 var final_list = "";
                 for(var i in tempList){

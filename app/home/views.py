@@ -5,18 +5,29 @@ from app.models import User, db, UserLog, Pic, ShouldKnow
 from datetime import datetime
 from werkzeug.security import generate_password_hash
 from functools import wraps
+from queue import PriorityQueue
 from random import choice
 import heapq
 
-videoDict = [(0, "0_8_0_OS.mp4"), (0, "1_0_0_OS.mp4"), (0, "2_4_0_OS.mp4"), (0, "3_4_0_OS.mp4"), (0, "4_8_0_OS.mp4"),
-             (0, "5_0_0_OS.mp4"), (0, "6_0_0_OS.mp4"), (0, "7_0_0_OS.mp4"), (0, "8_0_0_OS.mp4"), (0, "9_0_0_OS.mp4")]
+videoDict = PriorityQueue()
+# videoDict = [(0, "0_8_0_OS.mp4"), (0, "1_0_0_OS.mp4"), (0, "2_4_0_OS.mp4"), (0, "3_4_0_OS.mp4"), (0, "4_8_0_OS.mp4"),
+#              (0, "5_0_0_OS.mp4"), (0, "6_0_0_OS.mp4"), (0, "7_0_0_OS.mp4"), (0, "8_0_0_OS.mp4"), (0, "9_0_0_OS.mp4")]
 trainDict = {}
 trained = {}
 videoId = ""
 videoLabel = ""
 trueLabel = ""
 visited = {}
-heapq.heapify(videoDict)
+videoDict.put((0, "0_8_0_OS.mp4"))
+videoDict.put((0, "1_0_0_OS.mp4"))
+videoDict.put((0, "2_4_0_OS.mp4"))
+videoDict.put((0, "3_4_0_OS.mp4"))
+videoDict.put((0, "4_8_0_OS.mp4"))
+videoDict.put((0, "5_0_0_OS.mp4"))
+videoDict.put((0, "6_0_0_OS.mp4"))
+videoDict.put((0, "7_0_0_OS.mp4"))
+videoDict.put((0, "8_0_0_OS.mp4"))
+videoDict.put((0, "9_0_0_OS.mp4"))
 trainAns = {"25_8_0_OS.mp4": "9,6 6,3 3,2 2,1 1,4 4,7 7,8 8,9",
             "50_1_1_OS.mp4": "2,5 5,8",
             "75_8_2_OS.mp4": "2,3 3,6 6,8 8,9 7,8 8,7",
@@ -57,23 +68,24 @@ def annotate():
     global videoLabel
     global trueLabel
     global visited
+    store = []
     userName = session.get("name")
     if trained.get(userName):
-        if len(visited.get(userName)) == len(videoDict):
+        if len(visited.get(userName)) == videoDict.qsize():
             return render_template("home/complete.html")
         else:
-            video = heapq.heappop(videoDict)
+            video = videoDict.get()
             while video[1] in visited.get(userName):
-                temp = videoDict.pop()
-                videoDict.append(video)
-                video = temp
-            heapq.heapify(videoDict)
+                store.append(video)
+                video = videoDict.get()
+            while store:
+                videoDict.put(store.pop())
             videoId = video[1].split('_')[0]
             videoLabel = video[1].split('_')[1]
             trueLabel = video[1].split('_')[2]
             videoAddress = "../../static/video/" + videoId + "_" + videoLabel + "_" + trueLabel + "_OS.mp4"
             originalVideoAddress = "../../static/video/" + videoId + "_" + videoLabel + "_" + trueLabel + ".mp4"
-            heapq.heappush(videoDict, (video[0] + 1, video[1]))
+            videoDict.put((video[0] + 1, video[1]))
             tempSet = visited.get(userName)
             tempSet.add(video[1])
             visited[userName] = tempSet
