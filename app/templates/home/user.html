@@ -27,7 +27,12 @@
                     <form method="post" action="/train" >
 {#                {{ rule.ComplexWord+" "+rule.SimpleWord  }}#}
 {#                         <input type="Submit" name="button" id="S1" value="">#}
-                        <button name = "button" type="Submit" style="margin-left: 115px; margin-top: 50px" onclick="addList()" id="S1" value="">Submit </button>
+                                                <div  align="left" style="float: left">
+                            <button name = "button1" class="button" type="button" onclick="clearAll()" id="S2" value="">Clear all </button>
+                        </div>
+                        <div align="right">
+                            <button name = "button" class="button" type="Submit"  onclick="addList()" id="S1" value="">Submit </button>
+                        </div>
 {#                        <input type="checkbox" name="hobby" value="running" >{{hh}}<br>#}
 {#                        <button type="submit" style="margin-left: 140px; margin-top: 50px" onclick="addList()">Submit </button>#}
 {#                        <div style="position:relative;left:170px; margin-down:-20px">#}
@@ -52,7 +57,7 @@
                 <li></li> <li></li> <li></li>
 			</ul>
 			<p>一般</p>
-             <button name = "button1" type="Submit" style="margin-left: 100px; margin-top: 50px" onclick="showAnswer()" id="S2" value="">Show answer </button>
+             <button name = "button1" class="button" type="Submit" style="margin-left: 50px; margin-top: 10px" onclick="showAnswer()" id="S2" value="">Show answer </button>
 		</div>
     </div>
   </div>
@@ -102,6 +107,20 @@
 				height: 32px;
 				margin-bottom: 32px;
 			}
+                        .button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+            .button:hover {
+    background-color: #4CAF50; /* Green */
+    color: white;
+}
 			#pingfen li {
                 box-sizing: border-box;
                 float:left;
@@ -263,6 +282,14 @@
                 {#final_list = final_list + " "#}
                 {#document.getElementById('S1').value=final_list;#}
         }
+        function clearAll(){
+                for(line of a.values()){
+                    line.hide();
+                }
+                a.clear();
+                b.clear();
+                tempList = [];
+            }
         function showAnswer(){
             const a = new Map()
             const b = new Map()
