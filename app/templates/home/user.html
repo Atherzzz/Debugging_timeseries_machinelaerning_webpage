@@ -31,7 +31,7 @@
                             <button name = "button1" class="button" type="button" onclick="clearAll()" id="S2" value="">Clear all </button>
                         </div>
                         <div align="right">
-                            <button name = "button" class="button" type="Submit"  onclick="addList()" id="S1" value="">Submit </button>
+                            <button name = "button" class="button" type="button" onclick="addList()" id="S1" value="">Submit </button>
                         </div>
 {#                        <input type="checkbox" name="hobby" value="running" >{{hh}}<br>#}
 {#                        <button type="submit" style="margin-left: 140px; margin-top: 50px" onclick="addList()">Submit </button>#}
@@ -189,9 +189,10 @@
 		</style>
     		<script type="text/javascript">
                 var tempList = [];
-        window.onload = function() {
+                const c = new Set()
                 const a = new Map()
                 const b = new Map()
+        window.onload = function() {
 				var aData = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 				var button = document.getElementsByTagName('button');
 				var oDiv = document.getElementById('pingfen');
@@ -261,11 +262,35 @@
 
 			}
         function addList() {
+            var passed = true;
+            var ans = document.getElementById('answer');
+            var ansData = ans.innerText;
+            var strList = ansData.split(" ");
+            for(var i in strList){
+                if(i!==""){
+                    c.add(i);
+                }
+            }
+            if(Math.abs(strList.length - tempList.length)>2){
+                passed = false;
+            }
+            else{
+                for(var ii in tempList){
+                    if(!c.has(ii.toString())) passed = false;
+                }
+            }
+            if(passed){
                 var final_list = "";
                 for(var i in tempList){
                     final_list = final_list + tempList[i].toString() + " ";
                 }
+                document.getElementById('S1').type="Submit"
                 document.getElementById('S1').value=final_list;
+            }
+            else {
+                alert("wrong answer")
+                clearAll()
+            }
 
                 {#var list = [];#}
                 {#var aData = [1, 2, 3, 4, 5, 6, 7, 8, 9];#}
@@ -288,6 +313,7 @@
                 }
                 a.clear();
                 b.clear();
+                c.clear();
                 tempList = [];
             }
         function showAnswer(){
