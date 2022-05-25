@@ -4,36 +4,29 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-4" style="margin-top:100px">
-<h1>Thanks for your time and effort, there will be a short guidance for annotation</h1>
-        <h1>Here is the information of the video you will annotate</h1>
-        <h1>VideoId: 100 VideoLabel: 3 TrueLabel: 3</h1>
-    </div>
-    <div class="col-md-4" style="margin-top:100px">
-<h1>Here shows the original time series data, or saliency map, depends on should know/really know</h1>
-        <video width="320" height="240" controls>
-    <source src="http://127.0.0.1:8887/100_3_IG.mp4" type="video/mp4">
-</video>
-    </div>
-    <div class="col-md-4" style="margin-top:120px">
-		<div id="pingfen">
-			<ul>
-				<li></li> <li></li> <li></li>
-                <li></li> <li></li> <li></li>
-                <li></li> <li></li> <li></li>
-			</ul>
-			<p>一般</p>
-            <button type="button" style="margin-left: 140px; margin-top: 50px" onclick="addList()">Submit </button>
-		</div>
+    <div class="col-md-12" style="margin-top:100px">
+        <h3>Thanks for your time and effort! following video will guide you to complete the annotation </h3>
     </div>
           </div>
+  <div class="row">
+      <div class="col align-self-center" style="margin-top:100px">
+          <div class="center">
+                    <video  controls>
+    <source src="../../static/video/0_8_0.mp4" type="video/mp4">
+      </video>
+          </div>
+  </div>
     </div>
+</div>
 
 		<style type="text/css">
 			* {
 				margin: 0 auto;
 				padding: 0;
 			}
+            .center{
+              text-align: center;
+            }
 			.content{
 				width: 160px;
 				border: 10px solid #e6e6e6;
