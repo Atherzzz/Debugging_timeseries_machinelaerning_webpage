@@ -7,10 +7,10 @@ import pymysql, os
 app = Flask(__name__)
 
 # 数据库配置
-HOSTNAME = 'localhost'
+HOSTNAME = 'mengzheng.mysql.pythonanywhere-services.com'
 PORT = '3306'
-DATABASE = 'movic'
-USERNAME = 'root'
+DATABASE = 'mengzheng$movic'
+USERNAME = 'mengzheng'
 PASSWORD = 'zm980131'
 app.config["SQLALCHEMY_DATABASE_URI"] = 'mysql+pymysql://{}:{}@{}:{}/{}?charset=utf8'.format(USERNAME, PASSWORD,
                                                                                              HOSTNAME, PORT, DATABASE)
