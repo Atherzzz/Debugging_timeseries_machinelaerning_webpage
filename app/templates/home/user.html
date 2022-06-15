@@ -6,7 +6,7 @@
   <div class="row">
     <div class="col-md-2" style="margin-top:200px">
 <h4 id="videoId"> Video Id : {{ videoId }}</h4>
-<h4 id="videoLabel"> Predicted Label : {{ videoLabel }}</h4>
+<h4 id="videoLabel"> </h4>
         <h4 id="trueLabel"> True Label : {{ trueLabel }}</h4>
     </div>
       <div class="col-md-3" style="margin-top:150px">
@@ -57,7 +57,7 @@
                 <li></li> <li></li> <li></li>
 			</ul>
 			<p>一般</p>
-             <button name = "button1" class="button" type="Submit" style="margin-left: 50px; margin-top: 10px" onclick="showAnswer()" id="S2" value="">Show answer </button>
+             <button name = "button1" class="button" type="Submit" style="margin-left: 50px; margin-top: 10px; display: none" onclick="showAnswer()" id="S3" value="">Show answer </button>
 		</div>
     </div>
   </div>
@@ -193,8 +193,10 @@
                 const a = new Map()
                 const b = new Map()
         window.onload = function() {
+                {#var button = document.getElementsByTagName('button');#}
+                {#var ansButton = button.getElementById('S3')#}
+                {#ansButton.style.display = "none";#}
 				var aData = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-				var button = document.getElementsByTagName('button');
 				var oDiv = document.getElementById('pingfen');
 				var oli = oDiv.getElementsByTagName('li');
 				var oP = oDiv.getElementsByTagName('p')[0];
@@ -262,6 +264,8 @@
 
 			}
         function addList() {
+            var ansButton = document.getElementById('S3')
+            ansButton.style.display = "none";
             var passed = true;
             var ans = document.getElementById('answer');
             var ansData = ans.innerText;
@@ -289,6 +293,7 @@
             }
             else {
                 alert("wrong answer")
+                ansButton.style.display = "block";
                 clearAll()
             }
 

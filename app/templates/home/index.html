@@ -4,18 +4,29 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-12" style="margin-top:100px">
-        <h3>Thanks for your time and effort! following video will guide you to complete the annotation </h3>
-    </div>
-          </div>
-  <div class="row">
-      <div class="col align-self-center" style="margin-top:100px">
-          <div class="center">
-                    <video  controls>
-    <source src="../../static/video/0_8_0.mp4" type="video/mp4">
+      <div class="col-mid-6" style="margin-top:100px">
+          <h3>Thanks for your time and effort! You will annotate the process of writing a digit. </h3>
+          <h3>Following video show an example of annotating </h3>
+{#                <div class="center">#}
+                    <video  class="video_back" controls>
+    <source src="../../static/video/example.mp4" type="video/mp4">
       </video>
-          </div>
+{#          </div>#}
+            </div>
+      <h3>You may wondering how this is annotated, see following instructions</h3>
+      <div class="col-mid-6" style="margin-top:100px">
+          <h3>When annotating, we ignore the part shade by other part of hand (see images below)</h3>
+{#          <div class="center">#}
+              <img src="../../static/video/example.PNG">
+{#          </div>#}
   </div>
+            <div class="col-mid-6" style="margin-top:100px">
+      <h3>·Also, we ignore the process of moving hand to the starting point(see in video below)</h3>
+{#                    <div class="center">#}
+              <img src="../../static/video/ignore.gif">
+{#          </div>#}
+  </div>
+      <h3>Still confuse? Don't worry,we provide 10 tasks for training, you can click for training or annotation</h3>
     </div>
 </div>
 
@@ -24,6 +35,10 @@
 				margin: 0 auto;
 				padding: 0;
 			}
+            .video_back{
+                width: 75%;
+                height: 75%;
+            }
             .center{
               text-align: center;
             }
