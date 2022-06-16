@@ -58,6 +58,7 @@
       <option name="ignoredIdentifiers">
         <list>
           <option value="list.push" />
+          <option value="dict.has_key" />
         </list>
       </option>
     </inspection_tool>

@@ -46,14 +46,14 @@
         <!--小屏幕导航按钮和logo-->
         <!--导航-->
         <div class="navbar-collapse collapse">
-            <form class="navbar-form navbar-left" role="search" style="margin-top:18px;">
-                <div class="form-group input-group">
-                    <input type="text" class="form-control" placeholder="Please input the digit！">
-                    <span class="input-group-btn">
-                        <a class="btn btn-default" href="search.html"><span class="glyphicon glyphicon-search"></span>&nbsp;Search</a>
-                    </span>
-                </div>
-            </form>
+{#            <form class="navbar-form navbar-left" role="search" style="margin-top:18px;">#}
+{#                <div class="form-group input-group">#}
+{#                    <input type="text" class="form-control" placeholder="Please input the digit！">#}
+{#                    <span class="input-group-btn">#}
+{#                        <a class="btn btn-default" href="search.html"><span class="glyphicon glyphicon-search"></span>&nbsp;Search</a>#}
+{#                    </span>#}
+{#                </div>#}
+{#            </form>#}
             <ul class="nav navbar-nav navbar-right">
                 <li>
                     <a class="curlink" href="{{ url_for("home.annotate") }}"><span class="glyphicon glyphicon-film"></span>&nbsp;Annotation</a>
@@ -68,7 +68,7 @@
                     <a class="curlink" href="{{ url_for("home.logout") }}"><span class="glyphicon glyphicon-log-out"></span>&nbsp;exit</a>
                 </li>
                 <li>
-                    <a class="curlink" href="{{ url_for("home.user") }}"><span class="glyphicon glyphicon-user"></span>&nbsp;training</a>
+                    <a class="curlink" href="{{ url_for("home.reannotate") }}"><span class="glyphicon glyphicon-user"></span>&nbsp;training</a>
                 </li>
             </ul>
         </div>

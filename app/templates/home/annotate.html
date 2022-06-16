@@ -7,6 +7,7 @@
     <div class="col-md-4" style="margin-top:200px">
 <h2 id="videoId"> Video Id : {{ videoId }}</h2>
         <h2 id="trueLabel"> True Label : {{ trueLabel }}</h2>
+        <h3 id="name"> {{ videoId }}_{{ videoLabel }}_{{ trueLabel }}_OS.mp4</h3>
     </div>
       <div class="col-md-4" style="margin-top:150px">
        <h1> Original data</h1>
@@ -218,7 +219,8 @@
                 for(var i in tempList){
                     final_list = final_list + tempList[i].toString() + " ";
                 }
-                document.getElementById('S1').value=final_list;
+                var name = document.getElementById('name');
+                document.getElementById('S1').value=final_list + "$" + name.innerText;
                 {#var list = [];#}
                 {#var aData = [1, 2, 3, 4, 5, 6, 7, 8, 9];#}
                 {#var oDiv = document.getElementById('pingfen');#}
